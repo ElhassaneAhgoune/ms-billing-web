@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-login',
+  selector: 'app-login',
   imports: [RouterModule],
-  templateUrl: './auth-login.component.html',
-  styleUrl: './auth-login.component.scss'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
-export class AuthLoginComponent {
+export class LoginComponent {
   // public method
   SignInOptions = [
     {

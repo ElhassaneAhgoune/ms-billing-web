@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-register',
+  selector: 'app-signup',
   imports: [RouterModule],
-  templateUrl: './auth-register.component.html',
-  styleUrl: './auth-register.component.scss'
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss'
 })
-export class AuthRegisterComponent {
+export class SignupComponent {
   // public method
   SignUpOptions = [
     {

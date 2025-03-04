@@ -40,12 +40,11 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./features/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
+        loadComponent: () => import('./features/auth/login/login.component').then((c) => c.LoginComponent)
       },
       {
         path: 'register',
-        loadComponent: () =>
-          import('./features/pages/authentication/auth-register/auth-register.component').then((c) => c.AuthRegisterComponent)
+        loadComponent: () =>  import('./features/auth/signup/signup.component').then((c) => c.SignupComponent)
       }
     ]
   }
