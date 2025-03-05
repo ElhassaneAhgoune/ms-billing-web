@@ -1,0 +1,77 @@
+.nav-section {
+  margin-bottom: 5px;
+  
+  .section-header {
+    cursor: pointer;
+    
+    a.section-toggle {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      color: #333;
+      text-decoration: none;
+      border-radius: 4px;
+      position: relative;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      
+      .coded-micon {
+        margin-right: 8px;
+        font-size: 16px;
+        height: 16px;
+        display: inline-block;
+        text-align: center;
+        
+        i {
+          display: flex;
+        }
+      }
+      
+      .section-title {
+        flex: 1;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+      }
+      
+      .section-arrow {
+        transition: transform 0.3s ease;
+        
+        &.collapsed {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+  
+  .section-items {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    
+    &.collapsed {
+      max-height: 0;
+    }
+    
+    app-nav-item {
+      padding-left: 15px;
+      display: block;
+      
+      ::ng-deep .nav-item {
+        padding-left: 15px;
+        
+        &:before {
+          content: '';
+          position: absolute;
+          left: 20px;
+          top: 50%;
+          width: 5px;
+          height: 1px;
+          background-color: #ccc;
+        }
+      }
+    }
+  }
+}

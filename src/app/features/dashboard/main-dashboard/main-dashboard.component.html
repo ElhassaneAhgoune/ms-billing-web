@@ -1,0 +1,334 @@
+<div class="container-fluid">
+  <!-- Page Title -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Invoice Management Dashboard</h5>
+        <button class="btn btn-sm btn-light-primary" (click)="loadStatsData()">
+          <i class="ti ti-refresh me-1"></i> Refresh Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="row" *ngIf="isLoading">
+    <div class="col-12">
+      <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading dashboard data...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="row" *ngIf="hasError && !isLoading">
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!isLoading && !hasError">
+    <!-- Summary Cards Row -->
+    <div class="row">
+      <!-- Visa Invoices Card -->
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card visa-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-primary rounded">
+                  <i class="ti ti-credit-card text-visa f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-muted">Visa Annual Fees</h6>
+                <h4 class="mb-0 mt-1">{{ formatNumber( visaInvoiceCount )}}<i class="ti ti-currency-dollar"></i></h4>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-visa w-100" (click)="navigateToInvoices('visa')">
+                <i class="ti ti-eye me-1"></i> View Invoices
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mastercard Invoices Card -->
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card mastercard-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-secondary rounded">
+                  <i class="ti ti-credit-card text-mastercard f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-muted">Mastercard Annual Fees</h6>
+                <h4 class="mb-0 mt-1">{{formatNumber( mastercardInvoiceCount )}}<i class="ti ti-currency-dollar"></i>
+                </h4>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-mastercard w-100" (click)="navigateToInvoices('mastercard')">
+                <i class="ti ti-eye me-1"></i> View Invoices
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Invoices Card -->
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card pending-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-warning rounded">
+                  <i class="ti ti-clock text-warning f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-muted">Pending Invoices</h6>
+                <h4 class="mb-0 mt-1">{{ kpiMetrics.pendingInvoices }}</h4>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-warning w-100">
+                <i class="ti ti-list-check me-1"></i> Process Pending
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div *ngIf="isManager" class="row">
+
+
+      <!-- Network Distribution Chart -->
+      <div *ngIf="visaStats" class="col-md-4 mb-4">
+        <app-card [cardTitle]="'Visa Category Distribution'" [headerClass]="'border-bottom'">
+          <div id="visa-network-distribution-chart">
+            <apx-chart [series]="[visaStats.acquisition, visaStats.issuer,visaStats.both]"
+              [chart]="visaSummaryOptions.chart" [labels]="visaSummaryOptions.labels"
+              [dataLabels]="visaSummaryOptions.dataLabels" [colors]="visaSummaryOptions.colors"
+              [legend]="visaSummaryOptions.legend" [tooltip]="visaSummaryOptions.tooltip"
+              [plotOptions]="visaSummaryOptions.plotOptions"></apx-chart>
+          </div>
+        </app-card>
+      </div>
+
+      <div *ngIf="mastercardStats" class="col-md-4 mb-4">
+        <app-card [cardTitle]="'Mastercard Category Distribution'" [headerClass]="'border-bottom'">
+          <div id="mastercard-network-distribution-chart">
+            <apx-chart [series]="[mastercardStats.acquisition, mastercardStats.issuer,mastercardStats.both]"
+              [chart]="mastercardSummaryOptions.chart" [labels]="mastercardSummaryOptions.labels"
+              [dataLabels]="mastercardSummaryOptions.dataLabels" [colors]="mastercardSummaryOptions.colors"
+              [legend]="mastercardSummaryOptions.legend" [tooltip]="mastercardSummaryOptions.tooltip"
+              [plotOptions]="mastercardSummaryOptions.plotOptions"></apx-chart>
+          </div>
+        </app-card>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <app-card [cardTitle]="'Network Distribution'" [headerClass]="'border-bottom'">
+          <div id="network-distribution-chart">
+            <apx-chart [series]="[visaInvoiceCount, mastercardInvoiceCount]" [chart]="networkDistributionOptions.chart"
+              [labels]="networkDistributionOptions.labels" [dataLabels]="networkDistributionOptions.dataLabels"
+              [colors]="networkDistributionOptions.colors" [legend]="networkDistributionOptions.legend"
+              [tooltip]="networkDistributionOptions.tooltip"
+              [plotOptions]="networkDistributionOptions.plotOptions"></apx-chart>
+          </div>
+        </app-card>
+      </div>
+    </div>
+
+    <!-- KPI Metrics Row -->
+    <div class="row">
+      <!-- Upload Invoice Action -->
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card visa-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-primary rounded">
+                  <i class="ti ti-upload text-visa f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-visa">Upload Visa Invoice</h6>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-visa w-100" (click)="navigateToUpload('visa')">
+                <i class="ti ti-upload me-1"></i> Upload
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Reports Action -->
+      <!-- Upload Invoice Action -->
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card mastercard-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-primary rounded">
+                  <i class="ti ti-upload text-mastercard f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-mastercard">Upload Mastercard Invoice</h6>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-mastercard w-100" (click)="navigateToUpload('mastercard')">
+                <i class="ti ti-upload me-1"></i> Upload
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Analytics Action -->
+      <div *ngIf="isManager" class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card amount-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-info rounded">
+                  <i class="ti ti-chart-bar text-success f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-success">View Analytics</h6>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-analytics w-100" (click)="navigateToAnalytics()">
+                <i class="ti ti-chart-bar me-1"></i> View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isManager" class="col-sm-6 col-md-4 mb-4">
+        <div class="card summary-card user-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-md bg-light-info rounded">
+                  <i class="ti ti-user text-primary f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0 text-primary">View Profile</h6>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-light-primary w-100" (click)="navigateToProfile()">
+                <i class="ti ti-user me-1"></i> View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Recent Activity and User Logins Row -->
+    <div class="row">
+      <!-- Recent Activity -->
+      <div class="col-md-7 mb-4">
+        <app-card [cardTitle]="'Recent Invoice Activity'" [headerClass]="'border-bottom'">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>Network</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let activity of recentActivity">
+                  <td>{{ activity.id }}</td>
+                  <td>{{ activity.type }}</td>
+                  <td>{{ formatDate(activity.date) }}</td>
+                  <td>{{ formatCurrency(activity.amount) }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(activity.status)">
+                      {{ activity.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center mt-3">
+            <button class="btn btn-sm btn-light-primary" (click)="navigateToInvoices('visa')">
+              View All Activity
+            </button>
+          </div>
+        </app-card>
+      </div>
+
+      <!-- Recent User Logins -->
+      <div class="col-md-5 mb-4">
+        <app-card [cardTitle]="'Recent User Logins'" [headerClass]="'border-bottom'">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Event Type</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let login of connexionHistory">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar avatar-sm bg-light-primary rounded-circle me-2">
+                        <span class="text-primary">{{ login.username.charAt(0) }}</span>
+                      </div>
+                      <span>{{ login.username }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                          'badge-login': login.eventType === 'Login',
+                          'badge-logout': login.eventType === 'Logout',
+                          'badge-failed': login.eventType === 'Failed_Login'
+                        }">
+                      {{ login.eventType }}
+                    </span>
+                  </td>
+                  <td>{{ login.attemptDate | date:'medium' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center mt-3">
+            <button class="btn btn-sm btn-light-primary" (click)="navigateToFollowUp()">
+              View All Logins
+            </button>
+          </div>
+        </app-card>
+      </div>
+    </div>
+  </div>
+</div>

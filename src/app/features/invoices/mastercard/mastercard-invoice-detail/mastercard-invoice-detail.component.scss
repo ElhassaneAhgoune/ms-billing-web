@@ -1,0 +1,96 @@
+.card {
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.25rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.invoice-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table {
+  margin-bottom: 0;
+  
+  th {
+    width: 40%;
+    font-weight: 600;
+    background-color: #f8f9fa;
+  }
+  
+  td {
+    width: 60%;
+  }
+  
+  th, td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+    word-break: break-word;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  
+  i {
+    font-size: 1rem;
+  }
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+  
+  &:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+}
+
+.alert {
+  border-radius: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+.alert-info {
+  background-color: #cff4fc;
+  border-color: #b6effb;
+  color: #055160;
+}
+
+@media (max-width: 767.98px) {
+  .table th, .table td {
+    padding: 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+  }
+}

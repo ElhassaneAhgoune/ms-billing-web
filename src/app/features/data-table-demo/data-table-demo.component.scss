@@ -1,0 +1,52 @@
+// Additional styles for the data table demo
+h2 {
+  color: var(--pc-heading-color);
+  font-weight: 600;
+}
+
+:host ::ng-deep {
+  // Button styles
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    i {
+      font-size: 1rem;
+    }
+  }
+  
+  .btn-light-primary {
+    background-color: var(--info-light);
+    color: var(--info-dark);
+    border: none;
+    
+    &:hover {
+      background-color: var(--info-main);
+      color: white;
+    }
+  }
+  
+  .btn-light-danger {
+    background-color: var(--error-light);
+    color: var(--error-dark);
+    border: none;
+    
+    &:hover {
+      background-color: var(--error-main);
+      color: white;
+    }
+  }
+  
+  // Link styles
+  a.text-body {
+    text-decoration: none;
+    
+    &:hover {
+      color: var(--bs-primary) !important;
+    }
+  }
+}

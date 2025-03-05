@@ -1,0 +1,14 @@
+<div class="auth-footer row">
+  <div class="col my-1">
+    <p class="m-0">
+      {{ copyrightText }}
+    </p>
+  </div>
+  <div class="col-auto my-1">
+    <ul class="list-inline footer-link mb-0">
+      <li class="list-inline-item" *ngFor="let link of footerLinks">
+        <a [href]="link.url" target="_blank">{{ link.name }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

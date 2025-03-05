@@ -1,0 +1,182 @@
+<div class="auth-main">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="auth-header">
+        <a href="javascript:"><img src="assets/images/logo-dark.svg" alt="logo img" /></a>
+      </div>
+      <div class="card my-5">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-end mb-4">
+            <h3 class="mb-0"><b>Sign up</b></h3>
+            <a [routerLink]="['/login']" class="link-primary">Already have an account?</a>
+          </div>
+          <div *ngIf="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+          </div>
+  
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="form-group mb-3">
+              <label for="email" class="form-label">Email Address*</label>
+              <input type="email" id="email" formControlName="email" class="form-control"
+              [ngClass]="{'is-invalid': signupForm.controls['email'].invalid && signupForm.controls['email'].touched}"
+              >
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['email'].errors?.['required']">
+                    Email is required
+                  </div>
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['email'].errors?.['email']">
+                    Invalid email
+                  </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="username" class="form-label">Username*</label>
+                <input type="text" id="username" formControlName="username" class="form-control"
+                [ngClass]="{'is-invalid': signupForm.controls['username'].invalid && signupForm.controls['username'].touched}"
+                  >
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['username'].errors?.['required']">
+                    Username is required
+                  </div>
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['username'].errors?.['minlength']">
+                    Must be at least 2 characters
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <label for="roleId" class="form-label">Role ID*</label>
+                <input type="number" id="roleId" formControlName="roleId" class="form-control" value="1" readonly >
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name*</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  formControlName="firstName"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': signupForm.controls['firstName'].invalid && signupForm.controls['firstName'].touched}"
+                >
+                <div class="invalid-feedback" *ngIf="signupForm.controls['firstName'].errors?.['required']">
+                  First name is required
+                </div>
+              </div>
+  
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name*</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  formControlName="lastName"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': signupForm.controls['lastName'].invalid && signupForm.controls['lastName'].touched}"
+                >
+                <div class="invalid-feedback" *ngIf="signupForm.controls['lastName'].errors?.['required']">
+                  Last name is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="password" class="form-label">Password*</label>
+                <input 
+                  type="password" 
+                  id="password" 
+                  formControlName="password" 
+                  class="form-control"
+                  [ngClass]="{'is-invalid': signupForm.controls['password'].invalid && signupForm.controls['password'].touched}"
+                >
+                
+                <div class="invalid-feedback" *ngIf="signupForm.controls['password'].hasError('minLength')">
+                  {{ signupForm.controls['password'].errors?.['minLength'] }}
+                </div>
+                <div class="invalid-feedback" *ngIf="signupForm.controls['password'].hasError('uppercase')">
+                  {{ signupForm.controls['password'].errors?.['uppercase'] }}
+                </div>
+                <div class="invalid-feedback" *ngIf="signupForm.controls['password'].hasError('lowercase')">
+                  {{ signupForm.controls['password'].errors?.['lowercase'] }}
+                </div>
+                <div class="invalid-feedback" *ngIf="signupForm.controls['password'].hasError('digit')">
+                  {{ signupForm.controls['password'].errors?.['digit'] }}
+                </div>
+                <div class="invalid-feedback" *ngIf="signupForm.controls['password'].hasError('specialChar')">
+                  {{ signupForm.controls['password'].errors?.['specialChar'] }}
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="phoneNumber" class="form-label">Phone Number*</label>
+                <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+                [ngClass]="{'is-invalid': signupForm.controls['phoneNumber'].invalid && signupForm.controls['phoneNumber'].touched}"
+                >
+                <div class="invalid-feedback" *ngIf="signupForm.controls['phoneNumber'].errors?.['required']">
+                  Phone number is required
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="timezone" class="form-label">Timezone*</label>
+                <input
+                  type="text"
+                  id="timezone"
+                  formControlName="timezone"
+                  class="form-control"
+                  placeholder="Ex: Europe/Paris"
+                  [ngClass]="{'is-invalid': signupForm.controls['timezone'].invalid && signupForm.controls['timezone'].touched}"
+                  >
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['timezone'].errors?.['required']">
+                    Timezone is required
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <label for="locale" class="form-label">Locale*</label>
+                <input
+                  type="text"
+                  id="locale"
+                  formControlName="locale"
+                  class="form-control"
+                  placeholder="Ex: FR/US"
+                  [ngClass]="{'is-invalid': signupForm.controls['locale'].invalid && signupForm.controls['locale'].touched}"
+                  >
+                  <div class="invalid-feedback" *ngIf="signupForm.controls['locale'].errors?.['required']">
+                    Locale is required
+                  </div>
+              </div>
+            </div>
+          <p class="mt-4 text-sm text-muted">
+            By Signing up, you agree to our
+            <a href="javascript:" class="text-primary">Terms of Service</a>
+            and
+            <a href="javascript:" class="text-primary">Privacy Policy</a>
+          </p>
+          <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">
+              Create Account
+            </button>
+          </div>
+        </form>
+          <div class="saprator mt-3">
+            <span>Sign up with</span>
+          </div>
+          <div class="row">
+            @for (item of SignUpOptions; track item) {
+              <div class="col-4">
+                <div class="d-grid">
+                  <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                    <img src="{{ item.image }}" alt="google img" />
+                    <span class="d-none d-sm-inline-block">{{ item.name }}</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

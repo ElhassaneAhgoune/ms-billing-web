@@ -1,0 +1,94 @@
+
+// @import 'src/scss/settings/theme-variables';
+
+// :host {
+//   display: block;
+// }
+
+// .pc-container {
+//   position: relative;
+//   transition: all 0.3s ease-in-out;
+//   margin-left: $sidebar-width;
+//   background: var(--#{$variable-prefix}body-bg);
+//   min-height: calc(100vh - #{$header-height});
+//   padding-top: $header-height;
+  
+//   &.container-fluid {
+//     max-width: 1600px;
+//     margin-left: auto;
+//     margin-right: auto;
+//     padding-left: 24px;
+//     padding-right: 24px;
+//   }
+// }
+
+// .pc-content {
+//   position: relative;
+//   padding: 24px;
+// }
+
+// .pc-inner-content {
+//   padding-bottom: 24px; // Reduced padding since footer is now inside the container
+// }
+
+// .pc-menu-overlay {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100vw;
+//   height: 100vh;
+//   background: rgba(0, 0, 0, 0.4);
+//   z-index: 1029;
+//   opacity: 0;
+//   visibility: hidden;
+//   transition: all 0.3s ease-in-out;
+// }
+
+// .pc-sidebar {
+//   &.navbar-collapsed {
+//     width: $sidebar-collapsed-width;
+    
+//     ~ .pc-container {
+//       margin-left: $sidebar-collapsed-width;
+//     }
+//   }
+  
+//   &.mob-open {
+//     ~ .pc-container .pc-menu-overlay {
+//       opacity: 1;
+//       visibility: visible;
+//     }
+//   }
+// }
+
+// // Footer styles are now handled by the global footer.scss
+
+// @media (max-width: 991px) {
+//   .pc-sidebar {
+//     width: $sidebar-width;
+//     left: -#{$sidebar-width};
+    
+//     &.mob-open {
+//       left: 0;
+//     }
+    
+//     &.navbar-collapsed {
+//       width: $sidebar-width;
+//       left: -#{$sidebar-width};
+      
+//       ~ .pc-container {
+//         margin-left: 0;
+//       }
+//     }
+//   }
+  
+//   .pc-container {
+//     margin-left: 0;
+//   }
+// }
+
+// @media (max-width: 767px) {
+//   .pc-content {
+//     padding: 16px;
+//   }
+// }

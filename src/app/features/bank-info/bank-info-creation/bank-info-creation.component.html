@@ -1,0 +1,101 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">Creating Bank</h2>
+     
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary " (click)="resetFilter()" [disabled]="isLoading">
+                <i class="ti ti-refresh"></i> Refresh
+              </button>
+            <button type="button" class="btn btn-primary" (click)="navigateToBanks()">
+                <i class="bi bi-pie-chart"></i> Back To Banks List
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div *ngIf="isLoading" class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading ...</p>
+        </div>
+
+        <div *ngIf="successMessage && !isLoading" class="alert alert-success" role="alert">
+            {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage && !isLoading" class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="bankInfoForm" (ngSubmit)="onSubmit()" class="mb-4" *ngIf="!isLoading">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="bankName" class="form-label">Bank Name</label>
+                    <input
+                    type="text"
+                    id="bankName"
+                    formControlName="bankName"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': bankInfoForm.controls['bankName'].invalid && bankInfoForm.controls['bankName'].touched}"
+                    placeholder="Bank Name"
+                  >
+                    <div class="invalid-feedback" *ngIf="bankInfoForm.controls['bankName'].invalid && bankInfoForm.controls['bankName'].touched">
+                        Bank Name is required  
+                    </div>
+                </div> 
+
+                <div class="col-md-6">
+                    <label for="bankCode" class="form-label">Ica</label>
+                    <input
+                    type="text"
+                    id="bankCode"
+                    formControlName="billableIca"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': bankInfoForm.controls['billableIca'].invalid && bankInfoForm.controls['billableIca'].touched}"
+                    placeholder="Bank Code"
+                  >
+                    <div class="invalid-feedback" *ngIf="bankInfoForm.controls['billableIca'].invalid && bankInfoForm.controls['billableIca'].touched">
+                        Bank Code is required  
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="currency" class="form-label">Currency</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="ti ti-currency-dollar"></i></span>
+                        <select class="form-select" id="currency" formControlName="currency" aria-label="Currency Selection">
+                          <option value="USD">USD</option>
+                          <option value="EUR">EUR</option>
+                        </select>
+                      </div>
+                    <div class="invalid-feedback" *ngIf="bankInfoForm.controls['currency'].invalid && bankInfoForm.controls['currency'].touched">
+                        Currency is required  
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="country" class="form-label">Country</label>
+                    <input
+                    type="text"
+                    id="country"
+                    formControlName="country"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': bankInfoForm.controls['country'].invalid && bankInfoForm.controls['country'].touched}"
+                    placeholder="Country"
+                  >
+                    <div class="invalid-feedback" *ngIf="bankInfoForm.controls['country'].invalid && bankInfoForm.controls['country'].touched">
+                        Country is required  
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="btn-group w-100">
+                        <button type="submit" class="btn btn-primary"  [disabled]="bankInfoForm.invalid || isLoading">
+                            <i class="bi bi-search"></i> Create Bank 
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

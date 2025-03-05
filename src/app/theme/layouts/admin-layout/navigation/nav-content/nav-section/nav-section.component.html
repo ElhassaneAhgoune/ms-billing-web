@@ -1,0 +1,20 @@
+<div class="nav-section">
+  <div class="section-header" (click)="toggleSection($event)">
+    <a href="javascript:void(0);" class="section-toggle">
+      @if (section.icon) {
+        <span class="coded-micon">
+          <i antIcon type="{{ section.icon }}" theme="outline"></i>
+        </span>
+      }
+      <span class="section-title">{{ section.title | uppercase }}</span>
+      <span class="section-arrow" [ngClass]="{'collapsed': isCollapsed}">
+        <i antIcon type="down" theme="outline"></i>
+      </span>
+    </a>
+  </div>
+  <div class="section-items" [ngClass]="{'collapsed': isCollapsed}">
+    @for (item of items; track item) {
+      <app-nav-item [item]="item"></app-nav-item>
+    }
+  </div>
+</div>

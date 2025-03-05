@@ -1,0 +1,113 @@
+<div class="row">
+  <div class="col-12">
+    <h2 class="mb-4">Data Table Examples</h2>
+  </div>
+
+  <!-- Basic Data Table -->
+  <div class="col-12 mb-4">
+    <app-data-table 
+      [cardTitle]="'Basic Data Table'" 
+      [data]="users" 
+      [columns]="columns" 
+      [loading]="loading" 
+      [errorMessage]="errorMessage">
+      
+      <!-- Custom header actions template -->
+      <ng-template #headerActionsTemplate>
+        <button class="btn btn-sm btn-primary" (click)="reloadData()">
+          <i class="ti ti-refresh me-1"></i>
+          Reload
+        </button>
+      </ng-template>
+      
+      <!-- Custom cell template for status -->
+      <ng-template #cellTemplate let-row let-column="column">
+        @if (column.key === 'status') {
+          <span class="badge rounded-pill" [ngClass]="getStatusClass(row[column.key])">
+            {{ row[column.key] }}
+          </span>
+        } @else {
+          {{ row[column.key] }}
+        }
+      </ng-template>
+      
+      <!-- Row actions template -->
+      <ng-template #rowActionsTemplate let-user>
+        <div class="d-flex gap-2 justify-content-end">
+          <button class="btn btn-sm btn-icon btn-light-primary" title="Edit">
+            <i class="ti ti-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-icon btn-light-danger" title="Delete" (click)="deleteUser(user)">
+            <i class="ti ti-trash"></i>
+          </button>
+        </div>
+      </ng-template>
+    </app-data-table>
+  </div>
+
+  <!-- Products Table -->
+  <div class="col-md-12 col-xl-6 mb-4">
+    <app-data-table 
+      [cardTitle]="'Products'" 
+      [data]="products" 
+      [columns]="productColumns">
+      
+      <!-- Custom cell template for status -->
+      <ng-template #cellTemplate let-row let-column="column">
+        @if (column.key === 'status') {
+          <span class="badge rounded-pill" [ngClass]="getStatusClass(row[column.key])">
+            {{ row[column.key] }}
+          </span>
+        } @else if (column.key === 'stock' || column.key === 'price') {
+          <span class="fw-medium">{{ row[column.key] }}</span>
+        } @else {
+          {{ row[column.key] }}
+        }
+      </ng-template>
+    </app-data-table>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="col-md-12 col-xl-6 mb-4">
+    <app-data-table 
+      [cardTitle]="'Recent Orders'" 
+      [data]="orders" 
+      [columns]="orderColumns">
+      
+      <!-- Custom cell template for status -->
+      <ng-template #cellTemplate let-row let-column="column">
+        @if (column.key === 'status') {
+          <span class="badge rounded-pill" [ngClass]="getStatusClass(row[column.key])">
+            {{ row[column.key] }}
+          </span>
+        } @else if (column.key === 'id') {
+          <a href="javascript:" class="text-body fw-medium">#{{ row[column.key] }}</a>
+        } @else if (column.key === 'amount') {
+          <span class="fw-medium">{{ row[column.key] }}</span>
+        } @else {
+          {{ row[column.key] }}
+        }
+      </ng-template>
+    </app-data-table>
+  </div>
+
+  <!-- Empty State Example -->
+  <div class="col-md-12 col-xl-6 mb-4">
+    <app-data-table 
+      [cardTitle]="'Empty Table'" 
+      [data]="[]" 
+      [columns]="columns"
+      [noDataMessage]="'No users found'">
+    </app-data-table>
+  </div>
+
+  <!-- Error State Example -->
+  <div class="col-md-12 col-xl-6 mb-4">
+    <app-data-table 
+      [cardTitle]="'Error State'" 
+      [data]="[]" 
+      [columns]="columns"
+      [errorMessage]="'Failed to load data. Please try again later.'">
+    </app-data-table>
+  </div>
+</div>

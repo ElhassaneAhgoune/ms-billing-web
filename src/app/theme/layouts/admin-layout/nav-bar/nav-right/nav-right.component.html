@@ -1,0 +1,135 @@
+<ul class="list-unstyled">
+  <!-- GitHub link -->
+  <li class="pc-h-item">
+    <a href="https://github.com/ElhassaneAhgoune/ms-billing-web" target="_blank" class="pc-head-link me-0">
+      <i class="ti ti-brand-github"></i>
+    </a>
+  </li>
+  
+  <!-- Notifications dropdown -->
+  <li class="dropdown pc-h-item" ngbDropdown>
+    <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" ngbDropdownToggle>
+      <i class="ti ti-bell"></i>
+      <span *ngIf="connectionHistory?.length" class="badge bg-danger pc-h-badge dots">{{ connectionHistory.length }}</span>
+    </a>
+    <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
+      <div class="dropdown-header d-flex align-items-center justify-content-between">
+        <h5 class="m-0">Connection History</h5>
+        <a class="text-muted"><i class="ti ti-checks text-success f-18"></i></a>
+      </div>
+      <div class="dropdown-divider"></div>
+      <ng-scrollbar style="height: 320px" visibility="hover">
+        <div class="dropdown-body">
+          <div class="list-group">
+            <!-- Connection history items -->
+            <ng-container *ngIf="connectionHistory?.length; else noConnectionHistory">
+              <a *ngFor="let history of connectionHistory" class="list-group-item list-group-item-action">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <div class="avatar avatar-sm" [ngClass]="history.eventType === 'LOGIN_SUCCESS' ? 'bg-light-success' : 'bg-light-danger'">
+                      <i class="ti" [ngClass]="history.eventType === 'LOGIN_SUCCESS' ? 'ti-check' : 'ti-x'"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <span class="float-end text-muted">{{ history.attemptDate | date:'shortTime' }}</span>
+                    <p class="mb-0 fw-semibold">
+                      <span class="fw-bold">{{ history.username }}</span>
+                      {{ history.description }}
+                    </p>
+                    <span class="text-muted small">{{ history.attemptDate | date:'mediumDate' }}</span>
+                  </div>
+                </div>
+              </a>
+            </ng-container>
+            <ng-template #noConnectionHistory>
+              <div class="text-center py-4">
+                <p>No connection history available</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </ng-scrollbar>
+      <div class="dropdown-divider"></div>
+      <div class="text-center py-2">
+        <a class="link-primary cursor-pointer" (click)="router.navigate(['/follow-up'])">View all</a>
+      </div>
+    </div>
+  </li>
+  
+  <!-- User profile dropdown -->
+  <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
+    <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
+      <ng-container *ngIf="!isLoading; else loadingProfile">
+        <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avatar" />
+        <span class="user-name d-none d-md-inline-block">{{ userFullName }}</span>
+      </ng-container>
+      <ng-template #loadingProfile>
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span>Loading...</span>
+      </ng-template>
+    </a>
+    <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
+      <div class="dropdown-header">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="img-fluid wid-35 rounded-circle" />
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 fw-medium">{{ userFullName }}</h6>
+            <span class="text-muted">{{ userRole }}</span>
+          </div>
+          <a href="javascript:" class="text-muted" (click)="logout()">
+            <i class="ti ti-logout f-18"></i>
+          </a>
+        </div>
+      </div>
+      <ul ngbNav #nav="ngbNav" class="nav nav-tabs nav-tabs-custom" [activeId]="1">
+        <li ngbNavItem="1">
+          <a ngbNavLink>
+            <i class="ti ti-user me-2"></i>
+            Profile
+          </a>
+          <ng-template ngbNavContent>
+            <div class="profile-notification-scroll">
+              @for (task of profile; track task) {
+                <div class="dropdown-item">
+                  <a class="d-flex align-items-center cursor-pointer" (click)="task.action()">
+                    <i class="ti ti-{{ task.icon }} me-2 text-muted"></i>
+                    <span>{{ task.title }}</span>
+                  </a>
+                </div>
+              }
+              <div class="dropdown-item">
+                <a class="d-flex align-items-center cursor-pointer" (click)="logout()">
+                  <i class="ti ti-logout me-2 text-muted"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li ngbNavItem="2">
+          <a ngbNavLink>
+            <i class="ti ti-settings me-2"></i>
+            Settings
+          </a>
+          <ng-template ngbNavContent>
+            <div class="profile-notification-scroll">
+              @for (task of setting; track task) {
+                <div class="dropdown-item">
+                  <a class="d-flex align-items-center cursor-pointer" (click)="task.action()">
+                    <i class="ti ti-{{ task.icon }} me-2 text-muted"></i>
+                    <span>{{ task.title }}</span>
+                  </a>
+                </div>
+              }
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="mt-2 px-3"></div>
+    </div>
+  </li>
+</ul>

@@ -1,0 +1,61 @@
+<!-- Show internal links only when they're not hidden and the user has permission -->
+@if (item.url && !item.external && !item.hidden && hasPermission && (isAuthenticated || !isProtectedRoute(item.url))) {
+  <li [ngClass]="item.classes!" [routerLinkActive]="['active']" [class.disabled]="item.disabled">
+
+    <a href="javascript:void(0);"
+       (click)="closeOtherMenu($event)"
+       [title]="tooltipContent"
+       class="nav-link"
+       tabindex="0"> <!-- Add tabindex to ensure it's focusable -->
+      @if (item.icon) {
+        <span class="coded-micon">
+          <i antIcon type="{{ item.icon }}" theme="outline"></i>
+        </span>
+      }
+      <div class="menu-content">
+        @if (item.icon) {
+          <span class="coded-mtext">{{ item.title }}</span>
+          @if (item.description) {
+            <small class="menu-desc d-block">{{ item.description }}</small>
+            @if (item.apiEndpoint) {
+              <small class="api-endpoint d-block text-primary">{{ item.apiEndpoint }}</small>
+            }
+          }
+        } @else {
+          {{ item.title }}
+        }
+      </div>
+    </a>
+  </li>
+}
+
+<!-- Show external links only when they're not hidden and the user has permission -->
+@if (item.url && item.external && !item.hidden && hasPermission && (isAuthenticated || !isProtectedRoute(item.url))) {
+  <li [ngClass]="item.classes!" [class.disabled]="item.disabled">
+
+    <a href="javascript:void(0);"
+       (click)="closeOtherMenu($event)"
+       [title]="tooltipContent"
+       class="nav-link"
+       tabindex="0"> <!-- Add tabindex to ensure it's focusable -->
+      @if (item.icon) {
+        <span class="coded-micon">
+          <i antIcon type="{{ item.icon }}" theme="outline"></i>
+        </span>
+      }
+      <div class="menu-content">
+        @if (item.icon) {
+          <span class="coded-mtext">{{ item.title }}</span>
+          @if (item.description) {
+            <small class="menu-desc d-block">{{ item.description }}</small>
+            @if (item.apiEndpoint) {
+              <small class="api-endpoint d-block text-primary">{{ item.apiEndpoint }}</small>
+            }
+          }
+        } @else {
+          {{ item.title }}
+        }
+      </div>
+    </a>
+  </li>
+}

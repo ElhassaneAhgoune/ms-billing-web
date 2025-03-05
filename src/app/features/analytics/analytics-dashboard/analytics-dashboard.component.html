@@ -1,0 +1,351 @@
+<div class="row">
+  <!-- Page Title and Refresh Button -->
+  <div class="col-12 mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Executive Analytics Dashboard</h5>
+      <button class="btn btn-sm btn-light-primary" (click)="loadTrendsData(); loadAnomalies()">
+        <i class="ti ti-refresh me-1"></i> Refresh Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Controls Card -->
+  <div class="col-12 mb-4">
+    <app-card [showHeader]="false" blockClass="filter-section">
+      <form [formGroup]="filterForm">
+        <div class="row">
+          <div class="col-md-6 col-lg-3 mb-3">
+            <div class="filter-title">Date Range</div>
+            
+            <!-- Date Preset Buttons -->
+            <div class="date-preset-buttons mb-2">
+              <button type="button" class="btn-preset" [class.active]="activeDatePreset === '30d'" (click)="setDateRange('30d')">Last 30 Days</button>
+              <button type="button" class="btn-preset" [class.active]="activeDatePreset === '90d'" (click)="setDateRange('90d')">Quarter</button>
+              <button type="button" class="btn-preset" [class.active]="activeDatePreset === 'ytd'" (click)="setDateRange('ytd')">YTD</button>
+              <button type="button" class="btn-preset" [class.active]="activeDatePreset === 'custom'" (click)="setDateRange('custom')">Custom</button>
+            </div>
+            
+            <!-- Date Inputs -->
+            <div class="input-group">
+              <input type="date" class="form-control" formControlName="startDate">
+              <span class="input-group-text">to</span>
+              <input type="date" class="form-control" formControlName="endDate">
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-3 mb-3">
+            <div class="filter-title">Card Types</div>
+            
+            <!-- Card Type Toggle Buttons -->
+            <div class="card-type-toggle">
+              <button type="button" class="btn-card-type visa" [class.active]="isCardTypeSelected('VISA')" (click)="toggleCardType('VISA')">
+                <i class="ti ti-credit-card"></i> Visa
+              </button>
+              <button type="button" class="btn-card-type mastercard" [class.active]="isCardTypeSelected('MASTERCARD')" (click)="toggleCardType('MASTERCARD')">
+                <i class="ti ti-credit-card"></i> Mastercard
+              </button>
+            </div>
+            <div class="form-check mt-2">
+              <input class="form-check-input" type="checkbox" formControlName="includeBreakdown" id="includeBreakdown">
+              <label class="form-check-label" for="includeBreakdown">
+                Include Service Category Breakdown
+              </label>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-3 mb-3">
+            <div class="filter-title">Group By</div>
+            <ng-select
+              [items]="groupByOptions"
+              bindLabel="name"
+              bindValue="id"
+              formControlName="groupBy"
+              placeholder="Select grouping"
+              [clearable]="false">
+            </ng-select>
+          </div>
+          
+          <div class="col-md-6 col-lg-3 mb-3">
+            <div class="filter-title">Comparison</div>
+            <ng-select
+              [items]="comparisonOptions"
+              bindLabel="name"
+              bindValue="id"
+              formControlName="comparisonPeriod"
+              placeholder="Select comparison"
+              [clearable]="false">
+            </ng-select>
+            
+           
+          </div>
+        </div>
+        
+        <!-- Applied Filters -->
+        <div class="applied-filters mt-2" *ngIf="hasActiveFilters()">
+          <div class="filter-title">Applied Filters:</div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-light-primary text-primary p-2 d-flex align-items-center" *ngIf="filterForm.value.cardTypes?.length < cardTypeOptions.length">
+              Cards: {{getSelectedCardTypesLabel()}}
+              <i class="ti ti-x ms-1 cursor-pointer" (click)="resetCardTypes()"></i>
+            </span>
+            <span class="badge bg-light-primary text-primary p-2" *ngIf="activeDatePreset">
+              Period: {{getActiveDatePresetLabel()}}
+              <i class="ti ti-x ms-1 cursor-pointer" (click)="resetDateRange()"></i>
+            </span>
+            <button class="btn btn-sm btn-light-secondary ms-auto" (click)="resetAllFilters()">
+              Reset All Filters
+            </button>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+
+  <!-- Loading State -->
+  <div class="col-12" *ngIf="isLoading">
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="col-12" *ngIf="hasError && !isLoading">
+    <div class="alert alert-danger" role="alert">
+      <i class="ti ti-alert-circle me-2"></i>
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  @if (!isLoading && !hasError && trendsData) {
+    <!-- Executive Summary Cards -->
+    <div class="col-sm-6 col-md-3">
+      <app-card [showHeader]="false" blockClass="bg-primary text-white">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <div class="avatar avatar-md bg-primary rounded">
+              <i class="f-20 text-white ti ti-currency-dollar"></i>
+
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 text-white-50">Total Charges</h6>
+            <h4 class="mb-0 mt-1 text-white">{{ formatCurrency(getTotalAmount()) }}</h4>
+          </div>
+        </div>
+        <div class="mt-3 d-flex align-items-center">
+          <span class="badge bg-primary-dark me-2">
+            <i class="ti ti-trending-{{ getGrowthIcon(trendsData.overallGrowthRate) }} me-1"></i>
+            {{ formatPercentage(trendsData.overallGrowthRate) }}
+          </span>
+          <p class="mb-0 text-white-50 text-sm">
+            vs. previous period
+          </p>
+        </div>
+      </app-card>
+    </div>
+    
+    <div class="col-sm-6 col-md-3">
+      <app-card [showHeader]="false" blockClass="bg-success text-white">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <div class="avatar avatar-md bg-success rounded">
+
+              <i class="ti ti-receipt text-white f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 text-white-50">Transaction Count</h6>
+            <h4 class="mb-0 mt-1 text-white">{{ getTotalTransactions() }}</h4>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="mb-0 text-white-50 text-sm">
+            total transactions
+          </p>
+        </div>
+      </app-card>
+    </div>
+    
+    <div class="col-sm-6 col-md-3">
+      <app-card [showHeader]="false" blockClass="bg-info text-white">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <div class="avatar avatar-md bg-info rounded">
+
+              <i class="ti ti-calculator text-white f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 text-white-50">Average Transaction</h6>
+            <h4 class="mb-0 mt-1 text-white">{{ formatCurrency(getAverageTransactionAmount()) }}</h4>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="mb-0 text-white-50 text-sm">
+            per transaction
+          </p>
+        </div>
+      </app-card>
+    </div>
+    
+    <div class="col-sm-6 col-md-3">
+      <app-card [showHeader]="false" blockClass="bg-warning text-dark">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <div class="avatar avatar-md bg-warning rounded">
+              <i class="ti ti-alert-triangle text-white f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 text-dark-50">Anomalies Detected</h6>
+            <h4 class="mb-0 mt-1 text-dark">{{ anomalies.length }}</h4>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="mb-0 text-dark-50 text-sm">
+            requiring attention
+          </p>
+        </div>
+      </app-card>
+    </div>
+
+    <!-- Trends Chart -->
+    <div class="col-md-12 col-xl-8">
+      <app-card [cardTitle]="'Billing Trends Analysis'" [headerClass]="'border-bottom'">
+        <div id="trends-chart">
+          <apx-chart
+            [series]="trendsChartOptions.series"
+            [chart]="trendsChartOptions.chart"
+            [xaxis]="trendsChartOptions.xaxis"
+            [stroke]="trendsChartOptions.stroke"
+            [tooltip]="trendsChartOptions.tooltip"
+            [dataLabels]="trendsChartOptions.dataLabels"
+            [legend]="trendsChartOptions.legend"
+            [colors]="trendsChartOptions.colors"
+            [markers]="trendsChartOptions.markers"
+            [grid]="trendsChartOptions.grid"
+            [yaxis]="trendsChartOptions.yaxis"
+            [title]="trendsChartOptions.title"
+            [fill]="trendsChartOptions.fill"
+          ></apx-chart>
+        </div>
+      </app-card>
+    </div>
+
+    <!-- Service Category Breakdown -->
+    <div class="col-md-12 col-xl-4" *ngIf="trendsData?.serviceCategoryTrends && trendsData.serviceCategoryTrends.length > 0">
+      <app-card [cardTitle]="'Service Category Breakdown'" [headerClass]="'border-bottom'">
+        <div id="category-chart">
+          <apx-chart
+            [series]="categoryChartOptions.series"
+            [chart]="categoryChartOptions.chart"
+            [labels]="categoryChartOptions.labels"
+            [dataLabels]="categoryChartOptions.dataLabels"
+            [colors]="categoryChartOptions.colors"
+            [legend]="categoryChartOptions.legend"
+            [tooltip]="categoryChartOptions.tooltip"
+            [fill]="categoryChartOptions.fill"
+            [stroke]="categoryChartOptions.stroke"
+          ></apx-chart>
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th>Service Category</th>
+                <th>Amount</th>
+                <th>% of Total</th>
+                <th>Growth</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of trendsData.serviceCategoryTrends">
+                <td>{{ category.serviceCategory }}</td>
+                <td>{{ formatCurrency(category.totalAmount) }}</td>
+                <td>{{ formatPercentage(category.percentageOfTotal) }}</td>
+                <td [ngClass]="getGrowthClass(category.growthRate)">
+                  <i class="ti ti-trending-{{ getGrowthIcon(category.growthRate) }}"></i>
+                  {{ formatPercentage(category.growthRate) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </app-card>
+    </div>
+    
+      <!-- AI Insights -->
+      <div class="col-md-12" *ngIf="trendsData.insights && trendsData.insights.length > 0">
+        <app-card [cardTitle]="'AI Insights'" [headerClass]="'border-bottom'" [cardClass]="'bg-light-primary'">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent border-0" *ngFor="let insight of trendsData.insights">
+              <i class="ti ti-check-circle text-primary me-2"></i> {{ insight }}
+            </li>
+          </ul>
+        </app-card>
+      </div>
+
+    <!-- Anomalies -->
+    <div class="col-md-12">
+      <app-card [cardTitle]="'Detected Anomalies'" [headerClass]="'border-bottom'">
+        <!-- Loading state for anomalies -->
+        <div *ngIf="isLoadingAnomalies" class="d-flex justify-content-center my-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading anomalies...</span>
+          </div>
+        </div>
+        
+        <div *ngIf="!isLoadingAnomalies && anomalies.length === 0" class="alert alert-info">
+          No anomalies detected in the current period.
+        </div>
+        <div *ngIf="!isLoadingAnomalies && anomalies.length > 0" class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Expected</th>
+                <th>Actual</th>
+                <th>Deviation</th>
+                <th>Severity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let anomaly of anomalies">
+                <td>
+                  <strong>{{ anomaly.cardType }}</strong>: {{ anomaly.description }}
+                  <div class="small text-muted">{{ anomaly.serviceCode }}</div>
+                </td>
+                <td>{{ formatCurrency(anomaly.expectedValue) }}</td>
+                <td>{{ formatCurrency(anomaly.actualValue) }}</td>
+                <td [ngClass]="getGrowthClass(anomaly.deviationPercentage)">
+                  <i class="ti ti-trending-{{ getGrowthIcon(anomaly.deviationPercentage) }}"></i>
+                  {{ formatPercentage(anomaly.deviationPercentage) }}
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="getSeverityClass(anomaly.severity)">
+                    {{ anomaly.severity }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </app-card>
+    </div>
+
+  }
+
+  <!-- Empty State -->
+  <div class="col-12" *ngIf="!isLoading && !hasError && !trendsData">
+    <div class="text-center my-5">
+      <i class="ti ti-chart-bar text-muted" style="font-size: 48px;"></i>
+      <h4 class="mt-3">No Data Available</h4>
+      <p class="text-muted">Adjust your filters to view analytics data</p>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

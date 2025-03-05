@@ -1,0 +1,54 @@
+<ul class="list-unstyled">
+  <!-- Desktop collapse button -->
+  <li class="pc-h-item pc-sidebar-collapse d-none d-md-inline-flex">
+    <a
+      href="javascript:"
+      title="click to menu collapse"
+      class="pc-head-link ms-0"
+      [ngClass]="{ 'active': navCollapsed() }"
+      id="sidebar-hide"
+      (click)="navCollapse()"
+    >
+      @if (navCollapsed() === true) {
+        <i antIcon type="menu-unfold" theme="outline"></i>
+      } @else {
+        <i antIcon type="menu-fold" theme="outline"></i>
+      }
+    </a>
+  </li>
+  
+  <!-- Mobile collapse button -->
+  <li class="pc-h-item pc-sidebar-popup d-inline-flex d-md-none">
+    <a 
+      href="javascript:" 
+      class="pc-head-link ms-0" 
+      id="mobile-collapse" 
+      (click)="NavCollapsedMob.emit()"
+    >
+      <i antIcon type="menu-unfold" theme="outline"></i>
+    </a>
+  </li>
+  
+  <!-- Mobile search dropdown -->
+  <!-- <li class="dropdown pc-h-item d-inline-flex d-md-none" ngbDropdown>
+    <a href="javascript:" class="pc-head-link dropdown-toggle arrow-none m-0" ngbDropdownToggle>
+      <i antIcon type="search" theme="outline"></i>
+    </a> -->
+    <!-- <div class="dropdown-menu dropdown-menu-end pc-h-dropdown drp-search" ngbDropdownMenu>
+      <form class="px-3">
+        <div class="form-group mb-0 d-flex align-items-center">
+          <i antIcon type="search" theme="outline"></i>
+          <input type="search" class="form-control border-0 shadow-none" placeholder="Ctrl + K" />
+        </div>
+      </form>
+    </div>
+  </li> -->
+  
+  <!-- Desktop search
+  <li class="pc-h-item d-none d-md-inline-flex">
+    <form class="header-search">
+      <i antIcon type="search" theme="outline"></i>
+      <input type="search" class="form-control" placeholder="Ctrl + K" />
+    </form>
+  </li> -->
+</ul>

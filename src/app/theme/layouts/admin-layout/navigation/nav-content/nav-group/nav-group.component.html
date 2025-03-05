@@ -1,0 +1,25 @@
+<div class="nav-group-wrapper" [ngClass]="item().groupClasses">
+  <li class="nav-item coded-menu-caption" (click)="toggleGroup()">
+    <label>
+      <span class="group-toggle" [ngClass]="{'collapsed': isCollapsed}">
+        <span class="toggle-icon"></span>
+      </span>
+      <span class="group-title">{{ item().title }}</span>
+    </label>
+  </li>
+  <div class="nav-group-items" [ngClass]="{'collapsed': isCollapsed}">
+    <!-- Allow content projection for custom sections -->
+    <ng-content></ng-content>
+    
+    <!-- Render regular items -->
+    @if (item().id !== 'visa-management' && item().id !== 'settings-management') {
+      @for (item of item().children; track item) {
+        @if (item.type === 'collapse') {
+          <app-nav-collapse [item]="item"></app-nav-collapse>
+        } @else if (item.type === 'item') {
+          <app-nav-item [item]="item"></app-nav-item>
+        }
+      }
+    }
+  </div>
+</div>
