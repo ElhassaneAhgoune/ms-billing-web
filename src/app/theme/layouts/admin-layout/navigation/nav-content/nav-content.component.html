@@ -1,0 +1,35 @@
+<!-- Vertical layout -->
+<ng-scrollbar style="height: calc(100vh - 70px)" visibility="hover" id="nav-ps-mantis">
+  <div class="navbar-content">
+    <!-- App branding at the top -->
+    <!-- <div class="nav-branding">
+      <div class="nav-logo">
+        <img src="assets/images/logo-icon.svg" alt="Logo" class="logo-icon" />
+        <span class="app-name">Mantis</span>
+      </div>
+    </div> -->
+    
+    <!-- Nav items -->
+    <ul class="nav pc-navbar"
+        (clickOutside)="fireOutClick()"
+        (mouseleave)="navMob()">
+      @for (item of navigations; track item) {
+        @if (item.type === 'group') {
+          <app-nav-group [item]="item"></app-nav-group>
+        }
+      }
+    </ul>
+    
+    <!-- User profile section -->
+    <div class="nav-user-profile">
+      <img src="assets/images/user/avatar-1.jpg" alt="User" class="user-avatar" />
+      <div class="user-info">
+        <div class="user-name">Admin User</div>
+        <div class="user-role">MS-BILLING</div>
+      </div>
+      <div class="user-menu-toggle">
+        <i class="ti ti-chevron-right"></i>
+      </div>
+    </div>
+  </div>
+</ng-scrollbar>

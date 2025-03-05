@@ -1,0 +1,203 @@
+<div class="row">
+  <!-- User Profile Card -->
+  <div class="col-lg-6 mb-4">
+    <div class="card">
+      <div class="card-header">
+        <h5>User Profile</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="isLoading" class="d-flex justify-content-center my-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                class="form-control"
+                [ngClass]="{'is-invalid': profileForm.controls['username'].invalid && profileForm.controls['username'].touched}"
+                readonly
+              >
+              <div class="invalid-feedback" *ngIf="profileForm.controls['username'].errors?.['required']">
+                Username is required
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                [ngClass]="{'is-invalid': profileForm.controls['email'].invalid && profileForm.controls['email'].touched}"
+                readonly
+              >
+              <div class="invalid-feedback" *ngIf="profileForm.controls['email'].errors?.['required']">
+                Email is required
+              </div>
+              <div class="invalid-feedback" *ngIf="profileForm.controls['email'].errors?.['email']">
+                Please enter a valid email address
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                formControlName="firstName"
+                class="form-control"
+                [ngClass]="{'is-invalid': profileForm.controls['firstName'].invalid && profileForm.controls['firstName'].touched}"
+              >
+              <div class="invalid-feedback" *ngIf="profileForm.controls['firstName'].errors?.['required']">
+                First name is required
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                formControlName="lastName"
+                class="form-control"
+                [ngClass]="{'is-invalid': profileForm.controls['lastName'].invalid && profileForm.controls['lastName'].touched}"
+              >
+              <div class="invalid-feedback" *ngIf="profileForm.controls['lastName'].errors?.['required']">
+                Last name is required
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                class="form-control"
+              >
+            </div>
+
+            <div class="col-md-6">
+              <label for="timezone" class="form-label">Timezone</label>
+              <input
+                type="text"
+                id="timezone"
+                formControlName="timezone"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="locale" class="form-label">Locale</label>
+              <input
+                type="text"
+                id="locale"
+                formControlName="locale"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button
+              type="button"
+              class="btn btn-outline-secondary me-2"
+              routerLink="/dashboard/default"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="profileForm.invalid || isLoading"
+            >
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connection Follow-Up Card -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Connection History</h5>
+        <button
+          class="btn btn-sm btn-primary"
+          (click)="refreshConnectionHistory()"
+          [disabled]="loadingConnexion"
+        >
+          <i class="ti ti-refresh"></i> Refresh
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loadingConnexion" class="d-flex justify-content-center my-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <div *ngIf="connexionError" class="alert alert-danger" role="alert">
+          {{ connexionError }}
+        </div>
+
+        <div *ngIf="!loadingConnexion && connexionHistory.length === 0" class="alert alert-info">
+          No connection history found.
+        </div>
+
+        <div *ngIf="!loadingConnexion && connexionHistory.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Event Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of connexionHistory">
+                <td>{{ item.attemptDate | date:'medium' }}</td>
+                <td>
+                  <span [ngClass]="{
+                    'badge bg-success': item.eventType === 'LOGIN_SUCCESS',
+                    'badge bg-danger': item.eventType === 'LOGIN_FAILURE',
+                    'badge bg-info': item.eventType === 'LOGOUT',
+                    'badge bg-warning': item.eventType === 'RESET_PASSWORD'
+                  }">
+                    {{ item.eventType }}
+                  </span>
+                </td>
+                <td>{{ item.description }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

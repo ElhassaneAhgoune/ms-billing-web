@@ -1,0 +1,149 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>CSV Files</h5>
+        </div>
+        <div class="card-body">
+          <!-- Filter Section -->
+          <div class="mb-4">
+            <form [formGroup]="filterForm" (ngSubmit)="applyFilter()">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="csvName">CSV File Name</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="csvName" 
+                      formControlName="csvName" 
+                      placeholder="Enter file name">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="network">Network</label>
+                    <select class="form-control" id="network" formControlName="network">
+                      <option value="">All Networks</option>
+                      <option value="visa">Visa</option>
+                      <option value="mastercard">Mastercard</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="uploadDate">Upload Date</label>
+                    <input 
+                      type="date" 
+                      class="form-control" 
+                      id="uploadDate" 
+                      formControlName="uploadDate">
+                  </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <div class="form-group mb-0 w-100">
+                    <button type="submit" class="btn btn-primary mr-2">Apply Filter</button>
+                    <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Loading Spinner -->
+          <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          
+          <!-- Table -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th (click)="sortData('csvName')">
+                    CSV Name
+                    <span *ngIf="sortColumn === 'csvName'">
+                      <i class="ti" [ngClass]="sortDirection === 'asc' ? 'ti-arrow-up' : 'ti-arrow-down'"></i>
+                    </span>
+                  </th>
+                  <th (click)="sortData('network')">
+                    Network
+                    <span *ngIf="sortColumn === 'network'">
+                      <i class="ti" [ngClass]="sortDirection === 'asc' ? 'ti-arrow-up' : 'ti-arrow-down'"></i>
+                    </span>
+                  </th>
+                  <th (click)="sortData('uploadDate')">
+                    Upload Date
+                    <span *ngIf="sortColumn === 'uploadDate'">
+                      <i class="ti" [ngClass]="sortDirection === 'asc' ? 'ti-arrow-up' : 'ti-arrow-down'"></i>
+                    </span>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let csvFile of csvFiles">
+                  <td>{{ csvFile.csvName || '–' }}</td>
+                  <td>
+                    <span *ngIf="csvFile.network" class="badge" [ngClass]="getNetworkClass(csvFile.network)">
+                      {{ csvFile.network }}
+                    </span>
+                    <span *ngIf="!csvFile.network">–</span>
+                  </td>
+                  <td>{{ formatDate(csvFile.uploadDate) }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-info" (click)="viewCsvDetails(csvFile)">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- No Results -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length === 0" class="alert alert-info">
+            No CSV files found matching your criteria.
+          </div>
+          
+          <!-- Pagination -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length > 0" class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              Showing {{ csvFiles.length }}  of {{totalElements}} items
+            </div>
+            <div class="mb-2">
+              Page {{ currentPage + 1 }} of {{ totalPages }}
+            </div>
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                  <a class="page-link" href="javascript:void(0)" (click)="previousPage(); $event.preventDefault()">
+                    <i class="ti ti-chevron-left"></i>
+                  </a>
+                </li>
+                <!-- Show current page number -->
+                <li class="page-item active">
+                  <span class="page-link">{{ currentPage + 1 }}</span>
+                </li>
+                <!-- Always show next page button -->
+                <li class="page-item" [class.disabled]="currentPage + 1 >= totalPages">
+                  <a class="page-link" href="javascript:void(0)" (click)="nextPage(); $event.preventDefault()">
+                    <i class="ti ti-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
