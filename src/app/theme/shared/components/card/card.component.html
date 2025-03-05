@@ -1,0 +1,25 @@
+<div class="card" [ngClass]="cardClass()">
+  @if (showHeader()) {
+    <div class="card-header d-flex align-items-center justify-content-between" [ngClass]="headerClass()">
+      <div>
+        <h5>{{ cardTitle() }}</h5>
+        <ng-container *ngTemplateOutlet="headerTitleTemplate"></ng-container>
+      </div>
+      <div>
+        @if (options()) {
+          <div class="card-header-right">
+            <button class="btn btn-sm btn-icon btn-light-secondary">
+              <i class="ti ti-dots-vertical"></i>
+            </button>
+          </div>
+        }
+        <ng-container *ngTemplateOutlet="headerOptionsTemplate"></ng-container>
+      </div>
+    </div>
+  }
+  @if (showContent()) {
+    <div class="card-body" [ngClass]="blockClass()" [style.padding.px]="padding()">
+      <ng-content></ng-content>
+    </div>
+  }
+</div>

@@ -1,0 +1,214 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Mastercard Invoice Details</h5>
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back to Invoices
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div *ngIf="isLoading" class="d-flex justify-content-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          
+          <div *ngIf="!isLoading && !errorMessage && invoice">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="invoice-section">
+                  <h6 class="section-title">Invoice Information</h6>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Invoice Number</th>
+                          <td>{{ invoice.invoiceNumber || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Billing Date</th>
+                          <td>{{ formatDate(invoice.billingDate) }}</td>
+                        </tr>
+                        <tr>
+                          <th>Activity ICA</th>
+                          <td>{{ invoice.activityIca || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Invoice ICA</th>
+                          <td>{{ invoice.invoiceIca || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Billable ICA</th>
+                          <td>{{ invoice.billableIca || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Parent ICA</th>
+                          <td>{{ invoice.parentIca || '–' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="invoice-section">
+                  <h6 class="section-title">Billing Details</h6>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Billing Event</th>
+                          <td>{{ invoice.billingEvent || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Tier Event</th>
+                          <td>{{ invoice.tierEvent || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Event Description</th>
+                          <td>{{ invoice.eventDescription || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Quantity</th>
+                          <td>{{ invoice.quantity || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Rate</th>
+                          <td>{{ invoice.rate || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Collection Method</th>
+                          <td>{{ invoice.collectionMethod || '–' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <div class="invoice-section">
+                  <h6 class="section-title">Financial Information</h6>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Amount</th>
+                          <td>{{ formatCurrency(invoice.amount) }}</td>
+                        </tr>
+                        <tr>
+                          <th>Currency</th>
+                          <td>{{ invoice.currency || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Charge USD</th>
+                          <td>{{ formatCurrency(invoice.chargeUsd, 'USD') }}</td>
+                        </tr>
+                        <tr>
+                          <th>Charge Amount Local</th>
+                          <td>{{ formatCurrency(invoice.chargeAmountLocal, invoice.currency || 'USD') }}</td>
+                        </tr>
+                        <tr>
+                          <th>Tax Amount Local</th>
+                          <td>{{ formatCurrency(invoice.taxAmountLocal, invoice.currency || 'USD') }}</td>
+                        </tr>
+                        <tr>
+                          <th>Tax Amount USD</th>
+                          <td>{{ formatCurrency(invoice.taxAmountUsd, 'USD') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="invoice-section">
+                  <h6 class="section-title">Additional Information</h6>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Service Code</th>
+                          <td>{{ invoice.serviceCode || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>UOM Code</th>
+                          <td>{{ invoice.uomCode || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>From Country</th>
+                          <td>{{ invoice.fromCountry || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>To Country</th>
+                          <td>{{ invoice.toCountry || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Product</th>
+                          <td>{{ invoice.product || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Geographic Indicator</th>
+                          <td>{{ invoice.geographicIndicator || '–' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="invoice-section">
+                  <h6 class="section-title">Hierarchy & Classification</h6>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Hierarchy Fee Type</th>
+                          <td>{{ invoice.hierarchyFeeType || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Hierarchy Fee Category</th>
+                          <td>{{ invoice.hierarchyFeeCategory || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Hierarchy Fee Sub-Category</th>
+                          <td>{{ invoice.hierarchyFeeSubCategory || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Regulatory Flag</th>
+                          <td>{{ invoice.regulatoryFlag || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Charge Type</th>
+                          <td>{{ invoice.chargeType || '–' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Explanatory Text</th>
+                          <td>{{ invoice.explanatoryText || '–' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

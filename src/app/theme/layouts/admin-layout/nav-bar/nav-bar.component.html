@@ -1,0 +1,25 @@
+<header class="pc-header">
+  <div class="header-wrapper">
+    <!-- Left side of navbar -->
+    <div class="me-auto pc-mob-drp">
+      <app-nav-left [navCollapsed]="navCollapsed" (NavCollapse)="navCollapse()" (NavCollapsedMob)="navCollapseMob()"></app-nav-left>
+    </div>
+    
+    <!-- Search bar -->
+    <!-- <div class="ms-auto ms-md-0 me-md-2 d-none d-md-block">
+      <div class="pc-head-search">
+        <div class="input-group">
+          <span class="input-group-text search-icon">
+            <i class="ti ti-search"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Search..." />
+        </div>
+      </div>
+    </div> -->
+    
+    <!-- Right side of navbar -->
+    <div>
+      <app-nav-right />
+    </div>
+  </div>
+</header>

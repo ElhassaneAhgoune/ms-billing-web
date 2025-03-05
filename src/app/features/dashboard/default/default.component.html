@@ -1,0 +1,148 @@
+<div class="row">
+  <!-- Analytics Cards -->
+  @for (analytic of AnalyticEcommerce; track analytic) {
+    <div class="col-sm-6 col-md-3">
+      <app-card [showHeader]="false" blockClass="bg-white shadow-sm dashboard-card">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <div class="avatar avatar-md {{ analytic.background }} rounded">
+              <i class="ti ti-{{ analytic.icon }} text-white f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="mb-0 text-muted">{{ analytic.title }}</h6>
+            <h4 class="mb-0 mt-1">{{ analytic.amount }}</h4>
+          </div>
+        </div>
+        <div class="mt-3 d-flex align-items-center">
+          <span class="badge {{ analytic.background }} me-2">
+            <i class="ti ti-trending-{{ analytic.icon }} me-1"></i>
+            {{ analytic.percentage }}
+          </span>
+          <p class="mb-0 text-muted text-sm">
+            vs. previous period
+          </p>
+        </div>
+      </app-card>
+    </div>
+  }
+
+  <!-- Charts -->
+  <div class="col-md-12 col-xl-8">
+    <app-card [cardTitle]="'Monthly Revenue'" [headerClass]="'border-bottom'">
+      <app-monthly-bar-chart />
+    </app-card>
+  </div>
+  <div class="col-md-12 col-xl-4">
+    <app-card [cardTitle]="'Income Overview'" [headerClass]="'border-bottom'">
+      <app-income-overview-chart />
+    </app-card>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="col-md-12 col-xl-8">
+    <app-card [cardTitle]="'Recent Orders'" [headerClass]="'border-bottom'">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>TRACKING NO.</th>
+              <th>PRODUCT NAME</th>
+              <th>STATUS</th>
+              <th class="text-end">TOTAL ORDER</th>
+              <th class="text-end">TOTAL AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of recentOrder; track order) {
+              <tr>
+                <td>
+                  <a href="javascript:" class="text-body fw-medium">#{{ order.id }}</a>
+                </td>
+                <td>{{ order.name }}</td>
+                <td>
+                  <span class="badge rounded-pill" [ngClass]="{
+                    'bg-light-success text-success': order.status === 'Delivered',
+                    'bg-light-warning text-warning': order.status === 'Pending',
+                    'bg-light-danger text-danger': order.status === 'Cancelled'
+                  }">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td class="text-end">{{ order.quantity }}</td>
+                <td class="text-end fw-medium">{{ order.amount }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+
+  <!-- Analytics Chart -->
+  <div class="col-md-12 col-xl-4">
+    <app-card [cardTitle]="'Analytics'" [headerClass]="'border-bottom'">
+      <app-analytics-chart />
+    </app-card>
+  </div>
+
+  <!-- Sales Report -->
+  <div class="col-md-12 col-xl-8">
+    <app-card [cardTitle]="'Sales Report'" [headerClass]="'border-bottom'">
+      <app-sales-report-chart />
+    </app-card>
+  </div>
+
+  <!-- Transaction History -->
+  <div class="col-md-12 col-xl-4">
+    <app-card [cardTitle]="'Transaction History'" [headerClass]="'border-bottom'">
+      <div class="list-group list-group-flush">
+        @for (history of transaction; track history) {
+          <a href="javascript:" class="list-group-item list-group-item-action px-3 border-0">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-sm rounded-circle {{ history.background }}">
+                  <i class="ti ti-{{ history.icon }} text-white"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1 fw-medium">{{ history.title }}</h6>
+                <p class="mb-0 text-muted small">{{ history.time }}</p>
+              </div>
+              <div class="flex-shrink-0 text-end">
+                <h6 class="mb-1 fw-medium">{{ history.amount }}</h6>
+                <p class="mb-0 text-muted small">{{ history.percentage }}</p>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    </app-card>
+
+    <!-- Support Card -->
+    <app-card [showHeader]="false" blockClass="bg-primary-gradient text-white">
+      <div class="row align-items-center">
+        <div class="col-8">
+          <h5 class="text-white">Help & Support Chat</h5>
+          <p class="mb-0 opacity-75 fs-sm">Typical response within 5 min</p>
+        </div>
+        <div class="col-4 text-end">
+          <div class="avatar-group">
+            <div class="avatar avatar-sm">
+              <img src="assets/images/user/avatar-1.jpg" alt="user" class="img-fluid rounded-circle" />
+            </div>
+            <div class="avatar avatar-sm">
+              <img src="assets/images/user/avatar-2.jpg" alt="user" class="img-fluid rounded-circle" />
+            </div>
+            <div class="avatar avatar-sm">
+              <img src="assets/images/user/avatar-3.jpg" alt="user" class="img-fluid rounded-circle" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-grid mt-3">
+        <button class="btn btn-light-primary text-primary">Need Help?</button>
+      </div>
+    </app-card>
+  </div>
+</div>
