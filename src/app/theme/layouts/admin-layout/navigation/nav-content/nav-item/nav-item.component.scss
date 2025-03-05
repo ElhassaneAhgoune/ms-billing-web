@@ -1,0 +1,296 @@
+:host {
+  .menu-desc {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 5px;
+    display: block;
+    white-space: normal;
+    line-height: 1.4;
+    color: var(--bs-gray-600);
+    transition: all 0.25s ease;
+  }
+
+  .api-endpoint {
+    font-size: 0.7rem;
+    font-family: monospace;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    color: var(--bs-primary);
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 3px;
+    padding: 0 4px;
+  }
+
+  li {
+    position: relative;
+  }
+
+  li.active {
+    .menu-desc {
+      opacity: 0.9;
+      color: var(--bs-gray-700);
+    }
+  }
+
+  li:hover {
+    .api-endpoint {
+      opacity: 0.85;
+      max-height: 24px;
+      margin-top: 5px;
+      padding: 2px 6px;
+      display: block;
+    }
+
+    .menu-desc {
+      opacity: 0.9;
+    }
+  }
+  
+  a {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin: 4px 0;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      transform: translateX(3px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+    
+    .coded-micon {
+      margin-right: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    
+    .menu-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-width: 0; /* Important to enable proper text truncation */
+    }
+    
+    .coded-mtext {
+      display: block;
+      font-weight: 500;
+      white-space: normal;
+      width: 100%;
+      overflow: visible;
+      line-height: 1.3;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  
+  li.active {
+    a {
+      font-weight: 600;
+      background-color: rgba(0, 0, 0, 0.05);
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background-color: var(--bs-primary);
+        border-radius: 0 2px 2px 0;
+      }
+
+      .coded-micon {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // Group specific styling with improved visual distinction
+  :host-context(.nav-group-visa) {
+    li.active a {
+      &::before {
+        background-color: #1a5fb4; // Visa blue
+        box-shadow: 0 0 10px rgba(26, 95, 180, 0.3);
+      }
+
+      background-color: rgba(26, 95, 180, 0.05);
+    }
+    
+    .coded-micon {
+      color: #1a5fb4;
+    }
+
+    a:hover {
+      background-color: rgba(26, 95, 180, 0.04);
+    }
+
+    .api-endpoint {
+      color: #1a5fb4;
+    }
+  }
+
+  :host-context(.nav-group-mastercard) {
+    li.active a {
+      &::before {
+        background-color: #eb001b; // Mastercard red
+        box-shadow: 0 0 10px rgba(235, 0, 27, 0.2);
+      }
+
+      background-color: rgba(235, 0, 27, 0.04);
+    }
+    
+    .coded-micon {
+      color: #eb001b;
+    }
+
+    a:hover {
+      background-color: rgba(235, 0, 27, 0.03);
+    }
+
+    .api-endpoint {
+      color: #eb001b;
+    }
+  }
+
+  :host-context(.nav-group-csv) {
+    li.active a {
+      &::before {
+        background-color: #2e7d32; // Green for CSV
+        box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+      }
+
+      background-color: rgba(46, 125, 50, 0.04);
+    }
+    
+    .coded-micon {
+      color: #2e7d32;
+    }
+
+    a:hover {
+      background-color: rgba(46, 125, 50, 0.03);
+    }
+
+    .api-endpoint {
+      color: #2e7d32;
+    }
+  }
+}
+
+// Disabled/Inactive item styling with improved visual cues
+li.disabled, li:not(.active) {
+  a {
+    color: var(--bs-gray-600);
+    
+    .coded-micon {
+      opacity: 0.7;
+    }
+    
+    &:hover {
+      color: var(--bs-gray-800);
+    }
+  }
+}
+
+li.disabled {
+  a {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 6px;
+    }
+  }
+}
+
+// Focus accessibility improvement
+a:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 991.98px) {
+  :host {
+    .menu-desc {
+      display: none;
+    }
+    
+    .api-endpoint {
+      display: none;
+    }
+    
+    li:hover, li.active {
+      .menu-desc, .api-endpoint {
+        display: none;
+      }
+    }
+    
+    a {
+      padding: 12px 14px;
+      
+      .coded-micon {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+      }
+      
+      .coded-mtext {
+        font-size: 0.95rem;
+        max-width: calc(100% - 30px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    
+    // Improve touch targets on mobile
+    li {
+      margin-bottom: 4px;
+      
+      a {
+        min-height: 44px; // Better touch target size
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  :host {
+    a:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    li.active a {
+      background-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .api-endpoint {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+}

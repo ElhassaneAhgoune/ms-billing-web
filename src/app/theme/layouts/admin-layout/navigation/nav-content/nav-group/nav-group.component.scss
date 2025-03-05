@@ -1,0 +1,321 @@
+.nav-group-wrapper {
+  margin-bottom: 12px;
+  
+  .nav-item.coded-menu-caption {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    position: relative;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      transform: translateX(2px);
+    }
+    
+    &:active {
+      transform: translateX(2px) scale(0.98);
+    }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      color: #555;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.6px;
+      margin-bottom: 0;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      
+      .group-title {
+        position: relative;
+        padding-left: 2px;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: currentColor;
+          transition: width 0.3s ease;
+          opacity: 0.6;
+          border-radius: 1px;
+        }
+      }
+      
+      &:hover .group-title::after {
+        width: 100%;
+      }
+      
+      .group-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        
+        .toggle-icon {
+          position: relative;
+          width: 12px;
+          height: 12px;
+          
+          &:before, &:after {
+            content: '';
+            position: absolute;
+            background-color: currentColor;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+          }
+          
+          &:before {
+            top: 5px;
+            left: 0;
+            width: 12px;
+            height: 2px;
+          }
+          
+          &:after {
+            top: 0;
+            left: 5px;
+            width: 2px;
+            height: 12px;
+          }
+        }
+        
+        &.collapsed {
+          transform: rotate(-90deg);
+          
+          .toggle-icon:after {
+            opacity: 0;
+          }
+        }
+        
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+  
+  .nav-group-items {
+    max-height: 1500px; // Increased to accommodate more items
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-left: 8px;
+    margin-top: 4px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 16px;
+      height: 100%;
+      width: 1px;
+      background-color: rgba(0, 0, 0, 0.08);
+      border-radius: 1px;
+    }
+    
+    &.collapsed {
+      max-height: 0;
+      margin-top: 0;
+      opacity: 0.8;
+    }
+  }
+  
+  // Focus accessibility improvement
+  .nav-item.coded-menu-caption:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Group-specific styling with enhanced visual identity
+.nav-group-visa {
+  .nav-item.coded-menu-caption {
+    label {
+      color: #1a5fb4; // Visa blue
+      
+      .group-title::after {
+        background-color: #1a5fb4;
+      }
+      
+      .group-toggle .toggle-icon {
+        &:before, &:after {
+          background-color: #1a5fb4;
+        }
+      }
+      
+      .group-toggle:hover {
+        background-color: rgba(26, 95, 180, 0.08);
+      }
+    }
+  }
+  
+  .nav-group-items::before {
+    background-color: rgba(26, 95, 180, 0.15);
+  }
+}
+
+.nav-group-mastercard {
+  .nav-item.coded-menu-caption {
+    label {
+      color: #eb001b; // Mastercard red
+      
+      .group-title::after {
+        background-color: #eb001b;
+      }
+      
+      .group-toggle .toggle-icon {
+        &:before, &:after {
+          background-color: #eb001b;
+        }
+      }
+      
+      .group-toggle:hover {
+        background-color: rgba(235, 0, 27, 0.08);
+      }
+    }
+  }
+  
+  .nav-group-items::before {
+    background-color: rgba(235, 0, 27, 0.15);
+  }
+}
+
+.nav-group-csv {
+  .nav-item.coded-menu-caption {
+    label {
+      color: #2e7d32; // Green for CSV
+      
+      .group-title::after {
+        background-color: #2e7d32;
+      }
+      
+      .group-toggle .toggle-icon {
+        &:before, &:after {
+          background-color: #2e7d32;
+        }
+      }
+      
+      .group-toggle:hover {
+        background-color: rgba(46, 125, 50, 0.08);
+      }
+    }
+  }
+  
+  .nav-group-items::before {
+    background-color: rgba(46, 125, 50, 0.15);
+  }
+}
+
+.nav-group-highlight {
+  .nav-item.coded-menu-caption {
+    label {
+      color: #007bff; // Blue for highlight
+      
+      .group-title::after {
+        background-color: #007bff;
+      }
+      
+      .group-toggle .toggle-icon {
+        &:before, &:after {
+          background-color: #007bff;
+        }
+      }
+      
+      .group-toggle:hover {
+        background-color: rgba(0, 123, 255, 0.08);
+      }
+    }
+    
+    // Special highlight for this group
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+    }
+  }
+  
+  .nav-group-items::before {
+    background-color: rgba(0, 123, 255, 0.15);
+  }
+}
+
+// Responsive styles with improved touch targets
+@media (max-width: 991.98px) {
+  .nav-group-wrapper {
+    .nav-item.coded-menu-caption {
+      padding: 10px 14px;
+      margin-top: 12px;
+      
+      label {
+        font-size: 0.8rem;
+        
+        .group-toggle {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+    
+    .nav-group-items {
+      padding-left: 6px;
+      
+      &::before {
+        left: 12px;
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .nav-group-wrapper {
+    .nav-item.coded-menu-caption {
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+      
+      label {
+        color: #aaa;
+        
+        .group-toggle {
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+          }
+        }
+      }
+    }
+    
+    .nav-group-items {
+      &::before {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}

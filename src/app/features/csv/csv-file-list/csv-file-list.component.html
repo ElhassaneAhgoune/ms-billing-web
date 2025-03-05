@@ -1,0 +1,132 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>CSV Files</h5>
+        </div>
+        <div class="card-body">
+          <!-- Filter Section -->
+          <div class="mb-4">
+            <form [formGroup]="filterForm" (ngSubmit)="applyFilter()">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="csvName">CSV File Name</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="csvName" 
+                      formControlName="csvName" 
+                      placeholder="Enter file name">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="network">Network</label>
+                    <select class="form-control" id="network" formControlName="network">
+                      <option value="">All Networks</option>
+                      <option value="visa">Visa</option>
+                      <option value="mastercard">Mastercard</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="uploadDate">Upload Date</label>
+                    <input 
+                      type="date" 
+                      class="form-control" 
+                      id="uploadDate" 
+                      formControlName="uploadDate">
+                  </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <div class="form-group mb-0 w-100">
+                    <button type="submit" class="btn btn-primary mr-2">Apply Filter</button>
+                    <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Loading Spinner -->
+          <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          
+          <!-- Table -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>CSV Name</th>
+                  <th>Network</th>
+                  <th>Upload Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let csvFile of csvFiles">
+                  <td>{{ csvFile.csvName || '–' }}</td>
+                  <td>
+                    <span *ngIf="csvFile.network" class="badge" [ngClass]="getNetworkClass(csvFile.network)">
+                      {{ csvFile.network }}
+                    </span>
+                    <span *ngIf="!csvFile.network">–</span>
+                  </td>
+                  <td>{{ formatDate(csvFile.uploadDate) }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-info" (click)="viewCsvDetails(csvFile)">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- No Results -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length === 0" class="alert alert-info">
+            No CSV files found matching your criteria.
+          </div>
+          
+          <!-- Pagination -->
+          <div *ngIf="!isLoading && !errorMessage && csvFiles.length > 0" class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              Showing {{ Math.min(currentPage * pageSize + 1, totalElements) }} to {{ Math.min((currentPage + 1) * pageSize, totalElements) }} of {{ totalElements }} entries
+            </div>
+            <div>
+              <nav aria-label="Page navigation">
+                <ul class="pagination mb-0">
+                  <li class="page-item" [ngClass]="{'disabled': currentPage === 0}">
+                    <button class="page-link" (click)="previousPage()" [disabled]="currentPage === 0">
+                      Previous
+                    </button>
+                  </li>
+                  <li class="page-item" *ngFor="let page of [].constructor(Math.ceil(totalElements / pageSize)); let i = index" 
+                      [ngClass]="{'active': currentPage === i}">
+                    <button class="page-link" (click)="goToPage(i)">{{ i + 1 }}</button>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled': (currentPage + 1) * pageSize >= totalElements}">
+                    <button class="page-link" (click)="nextPage()" [disabled]="(currentPage + 1) * pageSize >= totalElements">
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

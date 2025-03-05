@@ -1,0 +1,39 @@
+<!-- Vertical layout -->
+<ng-scrollbar style="height: calc(100vh - 49px)" visibility="hover" id="nav-ps-mantis">
+  <div class="navbar-content" (mousemove)="updateGlowPosition($event)">
+    <!-- App branding at the top -->
+    <div class="nav-branding">
+      <div class="nav-logo">
+        <img src="assets/images/logo-icon.svg" alt="Logo" class="logo-icon" />
+        <span class="app-name">MS Billing</span>
+      </div>
+      <div class="nav-version">v{{ currentApplicationVersion }}</div>
+    </div>
+    
+    <!-- Interactive highlight effect container -->
+    <div class="nav-highlight" [style.--x]="highlightX + 'px'" [style.--y]="highlightY + 'px'"></div>
+    
+    <!-- Nav items with mouseover tracking -->
+    <ul class="nav coded-inner-navbar"
+        (clickOutside)="fireOutClick()"
+        (mouseleave)="navMob()"
+        (mousemove)="updateHighlightPosition($event)">
+      @for (item of navigations; track item) {
+        @if (item.type === 'group') {
+          <app-nav-group [item]="item"></app-nav-group>
+        }
+      }
+    </ul>
+    
+    <!-- Status indicator -->
+    <div class="nav-status">
+      <div class="status-indicator" [class.online]="isOnline">
+        <span class="status-dot"></span>
+        <span class="status-text">{{ isOnline ? 'Online' : 'Offline' }}</span>
+      </div>
+    </div>
+    
+    <!-- Pro card with improved styling -->
+   
+  </div>
+</ng-scrollbar>

@@ -1,0 +1,1092 @@
+:host {
+  display: block;
+  width: 100%;
+  
+  .navbar-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+<<<<<<< HEAD
+    padding: 16px 18px; // Increased padding for better spacing
+=======
+    padding: 10px;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+    
+    ul.nav {
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0;
+    }
+    
+    ul.coded-inner-navbar {
+      flex-grow: 1;
+      margin-left: 0;
+<<<<<<< HEAD
+      padding-top: 18px; // Increased top padding
+      padding-bottom: 30px; // Increased bottom padding
+      position: relative;
+      z-index: 1;
+      
+      // Add a subtle background glow for selected items
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: radial-gradient(
+          circle at var(--x, 50%) var(--y, 50%),
+          rgba(var(--highlight-color, 0, 123, 255), 0.08) 0%,
+          transparent 60%
+        );
+        opacity: 0;
+        transition: opacity 1s ease;
+        z-index: -1;
+      }
+      
+      &:has(li.active) {
+        &::after {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+  
+  // App branding section
+  .nav-branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 24px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    position: relative;
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      
+      .logo-icon {
+        height: 32px;
+        width: 32px;
+        margin-right: 10px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+      
+      .app-name {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, var(--bs-primary) 0%, #6c94e4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 40%;
+          height: 2px;
+          background: linear-gradient(90deg, var(--bs-primary) 0%, transparent 100%);
+          border-radius: 1px;
+        }
+      }
+    }
+    
+    .nav-version {
+      font-size: 11px;
+      opacity: 0.6;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.04);
+      margin-top: 5px;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 25%;
+      width: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
+    }
+  }
+  
+  // Nav highlight effect
+  .nav-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: var(--y, 50%);
+      left: var(--x, 50%);
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(
+        circle,
+        rgba(var(--highlight-color, 0, 123, 255), 0.08) 0%,
+        transparent 70%
+      );
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+  }
+  
+  // Status indicator for online/offline
+  .nav-status {
+    margin-top: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 16px;
+      background-color: rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+      opacity: 0.8;
+      
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--bs-gray-500);
+        margin-right: 6px;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background-color: rgba(0, 0, 0, 0.1);
+          opacity: 0;
+          animation: ripple 1.5s infinite;
+        }
+      }
+      
+      .status-text {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--bs-gray-600);
+      }
+      
+      &.online {
+        .status-dot {
+          background-color: #4caf50;
+          
+          &::after {
+            background-color: rgba(76, 175, 80, 0.3);
+            opacity: 1;
+          }
+        }
+        
+        .status-text {
+          color: #2e7d32;
+        }
+      }
+    }
+  }
+  
+  // Grouping headers
+  .nav-group-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--bs-gray-700);
+    margin: 18px 0 10px 0;
+    padding: 0 10px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 1px;
+      width: 5px;
+      background-color: currentColor;
+      opacity: 0.5;
+      border-radius: 1px;
+    }
+  }
+  
+  // Enhanced card styling with a wrapper
+  .nav-card-wrapper {
+    padding: 0 6px;
+    margin-top: 16px;
+  }
+  
+  .nav-card {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    
+    .card-body {
+      padding: 20px 16px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    img {
+      transform: scale(1);
+      transition: transform 0.5s ease;
+      max-width: 80px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+    
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
+      
+      img {
+        transform: scale(1.05);
+      }
+      
+      .nav-pro-button {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        
+        .btn-icon {
+          transform: rotate(10deg);
+        }
+      }
+    }
+    
+    // Add specific color accent for groups
+    .card-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--bs-primary) 0%, transparent 100%);
+      opacity: 0.8;
+      z-index: 2;
+    }
+    
+    // Card background pattern
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.02) 75%, transparent 75%, transparent);
+      background-size: 10px 10px;
+      opacity: 0.3;
+      z-index: 0;
+    }
+    
+    // Group-specific card styling
+    .nav-group-visa & {
+      .card-body::before {
+        background: linear-gradient(90deg, #1a5fb4 0%, #4c8ad6 100%);
+      }
+    }
+    
+    .nav-group-mastercard & {
+      .card-body::before {
+        background: linear-gradient(90deg, #eb001b 0%, #ff6b6b 100%);
+      }
+    }
+    
+    .nav-group-csv & {
+      .card-body::before {
+        background: linear-gradient(90deg, #2e7d32 0%, #66bb6a 100%);
+      }
+    }
+    
+    // Improved button styling
+    .nav-pro-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      background: linear-gradient(45deg, var(--bs-primary) 0%, #6c94e4 100%);
+      border: none;
+      font-weight: 500;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      
+      .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+      }
+      
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+=======
+      padding-top: 10px;
+      padding-bottom: 20px;
+    }
+  }
+  
+  .nav-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    // Add specific color accent for groups
+    .nav-group-visa & {
+      border-left: 3px solid #1a5fb4;
+    }
+    
+    .nav-group-mastercard & {
+      border-left: 3px solid #eb001b;
+    }
+    
+    .nav-group-csv & {
+      border-left: 3px solid #2e7d32;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+    }
+  }
+}
+
+<<<<<<< HEAD
+// Enhanced scrollbar styling
+::ng-deep ng-scrollbar {
+  --scrollbar-size: 6px;
+  --scrollbar-thumb-color: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.25);
+  --scrollbar-border-radius: 4px;
+=======
+// Scrollbar styling
+::ng-deep ng-scrollbar {
+  --scrollbar-size: 6px;
+  --scrollbar-thumb-color: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.3);
+  --scrollbar-border-radius: 3px;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  
+  // Scrollbar track
+  .ng-scrollbar-track {
+    background: transparent;
+<<<<<<< HEAD
+    opacity: 0;
+    transition: opacity 0.3s ease;
+=======
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  }
+  
+  // Scrollbar thumb
+  .ng-scrollbar-thumb {
+<<<<<<< HEAD
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    
+    &:hover {
+      --scrollbar-thumb-color: rgba(0, 0, 0, 0.25);
+    }
+  }
+  
+  &:hover {
+    .ng-scrollbar-track {
+      opacity: 1;
+    }
+=======
+    transition: background-color 0.3s ease;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  }
+}
+
+// Responsive styles for mobile devices
+@media (max-width: 991.98px) {
+  :host {
+    .navbar-content {
+<<<<<<< HEAD
+      padding: 10px;
+      
+      ul.coded-inner-navbar {
+        padding-top: 8px;
+        padding-bottom: 15px;
+      }
+    }
+    
+    .nav-branding {
+      padding: 8px 0 16px 0;
+      margin-bottom: 10px;
+      
+      .nav-logo {
+        margin-bottom: 5px;
+        
+        .logo-icon {
+          height: 24px;
+          width: 24px;
+        }
+        
+        .app-name {
+          font-size: 16px;
+        }
+      }
+      
+      .nav-version {
+        font-size: 10px;
+        padding: 1px 6px;
+      }
+    }
+    
+    .nav-status {
+      padding: 5px 0;
+      
+      .status-indicator {
+        padding: 3px 8px;
+        
+        .status-text {
+          font-size: 10px;
+        }
+        
+        .status-dot {
+          width: 6px;
+          height: 6px;
+          margin-right: 4px;
+        }
+      }
+    }
+    // Smaller promotional card on mobile
+    .nav-card-wrapper {
+      padding: 0 4px;
+      margin-top: 10px;
+    }
+    
+    .nav-card {
+      margin-bottom: 15px;
+      
+      .card-body {
+        padding: 15px 12px;
+      }
+      
+      h5 {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+      
+      .text-muted {
+        font-size: 12px;
+      }
+      
+      // Center-align content on mobile
+      .d-flex {
+        align-items: center;
+        text-align: center;
+      }
+      
+      img {
+        max-width: 60px;
+        margin-bottom: 8px;
+      }
+      
+      // Smaller button on mobile
+      .nav-pro-button {
+        padding: 6px 14px;
+        font-size: 12px;
+        
+        .btn-icon {
+          font-size: 10px;
+        }
+      }
+    }
+    
+    // Mobile responsive styles for new navigation features
+    
+    // Smaller active navigation indicator for mobile
+    ::ng-deep .nav-item {
+      &.active {
+        &::before {
+          left: -10px;
+          height: 50%;
+          width: 2px;
+        }
+      }
+      
+      .nav-link {
+        padding: 8px 10px;
+        
+        &:hover {
+          transform: translateX(1px);
+        }
+        
+        .nav-icon {
+          font-size: 14px;
+          margin-right: 8px;
+        }
+      }
+    }
+    
+    // Compact search bar on mobile
+    .nav-search {
+      margin: 8px 0 12px;
+      
+      .search-input {
+        padding: 6px 8px 6px 30px;
+        font-size: 13px;
+        
+        &::placeholder {
+          font-size: 12px;
+        }
+      }
+      
+      .search-icon {
+        left: 10px;
+        font-size: 12px;
+      }
+    }
+    
+    // Smaller badges on mobile
+    .nav-category-badge {
+      padding: 1px 6px;
+      font-size: 9px;
+      margin-left: 5px;
+    }
+    
+    // Compact user profile section on mobile
+    .nav-user-profile {
+      padding: 8px;
+      margin: 10px 0;
+      
+      .user-avatar {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+      }
+      
+      .user-info {
+        .user-name {
+          font-size: 13px;
+        }
+        
+        .user-role {
+          font-size: 11px;
+        }
+      }
+      
+      .user-menu-toggle {
+        width: 24px;
+        height: 24px;
+      }
+=======
+      padding: 5px;
+      
+      ul.coded-inner-navbar {
+        padding-top: 5px;
+        padding-bottom: 10px;
+      }
+    }
+    
+    // Hide promotional card on mobile
+    .nav-card {
+      display: none;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+    }
+  }
+  
+  ::ng-deep ng-scrollbar {
+    --scrollbar-size: 4px;
+  }
+}
+
+<<<<<<< HEAD
+// Refined animations for nav items entrance
+::ng-deep app-nav-item {
+  display: block;
+  animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+=======
+// Animation for nav items entrance
+::ng-deep app-nav-item {
+  display: block;
+  animation: fadeIn 0.3s ease;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  animation-fill-mode: both;
+  
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+<<<<<<< HEAD
+    transform: translateY(8px);
+=======
+    transform: translateY(5px);
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+<<<<<<< HEAD
+// Animation for pulse effect
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+}
+
+// Animation for status indicator
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+// Enhanced transition effect for collapsing/expanding groups
+::ng-deep .nav-group-items {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  &.collapsed {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+// Add focus styles for accessibility
+::ng-deep a:focus-visible,
+::ng-deep button:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+// Active navigation item styling
+::ng-deep .nav-item {
+  &.active {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60%;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--bs-primary), rgba(var(--highlight-color, 0, 123, 255), 0.7));
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(var(--highlight-color, 0, 123, 255), 0.4);
+    }
+    
+    .nav-link {
+      background-color: rgba(var(--highlight-color, 0, 123, 255), 0.08);
+      font-weight: 500;
+    }
+  }
+  
+  // Hover effect for nav items
+  .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    
+    &:hover {
+      background-color: rgba(var(--highlight-color, 0, 123, 255), 0.05);
+      transform: translateX(2px);
+    }
+    
+    // Icon bounce animation on hover
+    .nav-icon {
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    &:hover .nav-icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Search bar styling
+.nav-search {
+  margin: 10px 5px 15px;
+  position: relative;
+  
+  .search-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    
+    &:focus {
+      background-color: white;
+      border-color: rgba(var(--highlight-color, 0, 123, 255), 0.4);
+      box-shadow: 0 0 0 3px rgba(var(--highlight-color, 0, 123, 255), 0.1);
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 13px;
+    }
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 14px;
+    pointer-events: none;
+    transition: color 0.3s ease;
+  }
+  
+  .search-input:focus + .search-icon {
+    color: var(--bs-primary);
+  }
+}
+
+// Navigation category badges
+.nav-category-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+  
+  &.new {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  &.beta {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  &.pro {
+    background: linear-gradient(45deg, #8a2be2, #4a00e0);
+    color: white;
+  }
+}
+
+// User profile section
+.nav-user-profile {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  margin: 15px 0;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  
+  .user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-info {
+    flex-grow: 1;
+    overflow: hidden;
+    
+    .user-name {
+      font-weight: 500;
+      font-size: 14px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .user-role {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0;
+    }
+  }
+  
+  .user-menu-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Refined collapse toggle animation
+.collapse-toggle {
+  transition: transform 0.3s ease;
+  
+  &.collapsed {
+    transform: rotate(-90deg);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  :host {
+    .nav-branding {
+      border-bottom-color: rgba(255, 255, 255, 0.05);
+      
+      .nav-logo .app-name {
+        background: linear-gradient(90deg, #6c94e4 0%, #a1bded 100%);
+        -webkit-background-clip: text;
+        
+        &::after {
+          background: linear-gradient(90deg, #6c94e4 0%, transparent 100%);
+        }
+      }
+      
+      .nav-version {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      &::after {
+        background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+      }
+    }
+    
+    .nav-group-title {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .nav-status {
+      .status-indicator {
+        background-color: rgba(255, 255, 255, 0.08);
+        
+        .status-text {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        &.online .status-text {
+          color: #81c784;
+        }
+      }
+    }
+    
+    .nav-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      
+      &::after {
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.05) 75%, transparent 75%, transparent);
+      }
+      
+      h5 {
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      .text-muted {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+      
+      &:hover {
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+      }
+      
+      .nav-pro-button {
+        background: linear-gradient(45deg, #5c7ccc 0%, #8ba8e8 100%);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+      }
+    }
+    
+    ul.coded-inner-navbar::after {
+      opacity: 0.15;
+    }
+    
+    .nav-highlight::after {
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+      );
+    }
+    
+    // Dark mode styles for new navigation features
+    
+    // Active nav items in dark mode
+    ::ng-deep .nav-item {
+      &.active {
+        &::before {
+          background: linear-gradient(to bottom, #6c94e4, rgba(108, 148, 228, 0.7));
+          box-shadow: 0 0 8px rgba(108, 148, 228, 0.5);
+        }
+        
+        .nav-link {
+          background-color: rgba(255, 255, 255, 0.08);
+        }
+      }
+      
+      .nav-link {
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+      }
+    }
+    
+    // Dark mode search bar styling
+    .nav-search {
+      .search-input {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+        
+        &:focus {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-color: rgba(108, 148, 228, 0.4);
+          box-shadow: 0 0 0 3px rgba(108, 148, 228, 0.1);
+        }
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.3);
+        }
+      }
+      
+      .search-icon {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      
+      .search-input:focus + .search-icon {
+        color: #6c94e4;
+      }
+    }
+    
+    // Dark mode category badges
+    .nav-category-badge {
+      &.new {
+        background-color: #2e7d32;
+      }
+      
+      &.beta {
+        background-color: #e65100;
+      }
+      
+      &.pro {
+        background: linear-gradient(45deg, #6a1b9a, #3700b3);
+      }
+    }
+    
+    // Dark mode user profile section
+    .nav-user-profile {
+      background-color: rgba(255, 255, 255, 0.05);
+      
+      .user-avatar {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+      
+      .user-info {
+        .user-name {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .user-role {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+      
+      .user-menu-toggle {
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+    
+    // Dark mode collapse toggle
+    .collapse-toggle {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+  
+  ::ng-deep ng-scrollbar {
+    --scrollbar-thumb-color: rgba(255, 255, 255, 0.15);
+    --scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.25);
+=======
+// Transition effect for collapsing/expanding groups
+::ng-deep .nav-group-items {
+  transition: all 0.3s ease;
+  
+  &.collapsed {
+    opacity: 0;
+>>>>>>> 56f6fac8b75807f7fd3dee5d92ce0c814333995d
+  }
+}
